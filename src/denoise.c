@@ -489,6 +489,27 @@ float rnnoise_process_frame(DenoiseState *st, float *out, const float *in) {
   return vad_prob;
 }
 
+float rnnoise_process_frame_vad(DenoiseState *st, const float *in) {
+  kiss_fft_cpx X[FREQ_SIZE];
+  kiss_fft_cpx P[WINDOW_SIZE];
+  float x[FRAME_SIZE];
+  float Ex[NB_BANDS], Ep[NB_BANDS];
+  float Exp[NB_BANDS];
+  float features[NB_FEATURES];
+  float vad_prob = 0;
+  int silence;
+  static const float a_hp[2] = {-1.99599, 0.99600};
+  static const float b_hp[2] = {-2, 1};
+  biquad(x, st->mem_hp_x, in, b_hp, a_hp, FRAME_SIZE);
+  silence = compute_frame_features(st, X, P, Ex, Ep, Exp, features, x);
+
+  if (!silence) {
+    compute_rnn_vad_only(&st->rnn, &vad_prob, features);
+  }
+
+  return vad_prob;
+}
+
 #if TRAINING
 
 static float uni_rand() {

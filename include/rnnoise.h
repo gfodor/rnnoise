@@ -58,6 +58,8 @@ RNNOISE_EXPORT void rnnoise_destroy(DenoiseState *st);
 
 RNNOISE_EXPORT float rnnoise_process_frame(DenoiseState *st, float *out, const float *in);
 
+RNNOISE_EXPORT float rnnoise_process_frame_vad(DenoiseState *st, const float *in);
+
 RNNOISE_EXPORT RNNModel *rnnoise_model_from_file(FILE *f);
 
 RNNOISE_EXPORT void rnnoise_model_free(RNNModel *model);

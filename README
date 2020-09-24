@@ -1,5 +1,7 @@
 RNNoise is a noise suppression library based on a recurrent neural network.
 
+This is a fork which exposes the ability to do inference on just the VAD subnetwork.
+
 To compile, just type:
 % ./autogen.sh
 % ./configure
